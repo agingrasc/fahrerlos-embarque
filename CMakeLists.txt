@@ -4,7 +4,7 @@ project(fahrerlos-embedded C ASM)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 function(add_bin_from_elf bin elf)
-    add_custom_target(${bin} ALL ${CMAKE_OBJCOPY} -Obinary ${elf} {$bin} DEPENDS ${elf})
+    add_custom_target(${bin} ALL ${CMAKE_OBJCOPY} -Obinary ${elf} ${bin} DEPENDS ${elf})
 endfunction()
 
 include_directories("./inc"
@@ -37,6 +37,4 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${LINKER_SCRIPT} -nosta
 add_executable(fahrerlos-test ${SOURCE_FILES})
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES} startup/startup_stm32.s)
 add_bin_from_elf(${PROJECT_NAME}.bin ${PROJECT_NAME}.elf)
-add_custom_command(TARGET ${PROJECT_NAME}.bin
-        POST_BUILD
-        COMMAND st-flash write ${PROJECT_NAME}.bin 0x8000000)
+add_custom_command(TARGET ${PROJECT_NAME}.bin POST_BUILD COMMAND st-flash write ${PROJECT_NAME}.bin 0x8000000)
