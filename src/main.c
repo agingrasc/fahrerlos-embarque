@@ -3,9 +3,22 @@
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_conf.h"
 
+uint32_t timestamp;
+
+
+void SysTick_Handler() {
+    timestamp++;
+}
+
+void delay(uint32_t delay) {
+    uint32_t target_time = delay + timestamp;
+    while (timestamp < target_time);
+}
 
 int main() {
     SystemInit();
+
+    SysTick_Config(SystemCoreClock/1000);
 
     GPIO_InitTypeDef gpio_init;
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
@@ -20,6 +33,7 @@ int main() {
     GPIO_ResetBits(GPIOD, GPIO_Pin_15);
 
     while(1) {
-        GPIO_SetBits(GPIOD, GPIO_Pin_15);
+        GPIO_ToggleBits(GPIOD, GPIO_Pin_15);
+        delay(500);
     }
 }
