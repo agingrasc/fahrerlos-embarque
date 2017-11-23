@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(fahrerlos-embedded C ASM)
 
-#set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 function(add_bin_from_elf bin elf)
     add_custom_target(${bin} ALL ${CMAKE_OBJCOPY} -Obinary ${elf} ${bin} DEPENDS ${elf})
@@ -28,12 +28,10 @@ set(GENERAL_COMPILE_DEFINES "-DSTM32F4 -DUSE_STDPERIPH_DRIVER -DSTM32F40XX -DSTM
 set_source_files_properties(${SOURCE_FILES} PROPERTY COMPILE_FLAGS "${GENERAL_COMPILE_DEFINES} ${GENERAL_COMPILE_FLAGS}")
 if(${CMAKE_TOOLCHAIN_FILE} OR ${CMAKE_TOOLCHAIN_FILE} STREQUAL "toolchain-arm-none-eabi.cmake")
     #link_directories(/opt/arm-none-eabi/lib/hard /opt/arm-none-eabi/arm-none-eabi/lib/hard)
-    set_source_files_properties(${SOURCE_FILES} PROPERTY COMPILE_FLAGS "${STM32_FLAGS} ${GENERAL_COMPILE_FLAGS} ${GENERAL_COMPILE_DEFINES}")
-    set_source_files_properties(startup/startup_stm32.s PROPERTY COMPILE_FLAGS "${STM32_FLAGS}")
+    set_source_files_properties(${SOURCE_FILES} PROPERTIES COMPILE_FLAGS "${STM32_FLAGS} ${GENERAL_COMPILE_FLAGS} ${GENERAL_COMPILE_DEFINES}")
 endif()
 
-set(LINKER_SCRIPT "../stm32_flash.ld" CACHE STRING "")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -T ${LINKER_SCRIPT} -nostartfiles")
+set_source_files_properties(startup/startup_stm32.s PROPERTIES COMPILE_FLAGS "${STM32_FLAGS}" LANGUAGE ASM)
 add_executable(fahrerlos-test ${SOURCE_FILES})
 add_executable(${PROJECT_NAME}.elf ${SOURCE_FILES} startup/startup_stm32.s)
 add_bin_from_elf(${PROJECT_NAME}.bin ${PROJECT_NAME}.elf)
