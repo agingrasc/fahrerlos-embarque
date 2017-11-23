@@ -94,7 +94,7 @@ LoopFillZerobss:
   bcc  FillZerobss
 
 /* Call the clock system intitialization function.*/
-//  bl  SystemInit
+  bl  SystemInit
 
 /* Enable FPU */
 LDR.W R0, =0xE000ED88

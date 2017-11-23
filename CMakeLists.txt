@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(fahrerlos-embedded C ASM)
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
+#set(CMAKE_VERBOSE_MAKEFILE ON)
 
 function(add_bin_from_elf bin elf)
     add_custom_target(${bin} ALL ${CMAKE_OBJCOPY} -Obinary ${elf} ${bin} DEPENDS ${elf})
