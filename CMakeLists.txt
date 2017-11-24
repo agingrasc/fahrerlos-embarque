@@ -18,8 +18,11 @@ set(STM_SRC
 set(SOURCE_FILES
         src/main.c
         src/system_stm32f4xx.c
+        src/debug.c
         ${STM_SRC}/stm32f4xx_rcc.c
-        ${STM_SRC}/stm32f4xx_gpio.c)
+        ${STM_SRC}/stm32f4xx_usart.c
+        ${STM_SRC}/stm32f4xx_gpio.c
+        ${STM_SRC}/misc.c)
 
 set(GENERAL_COMPILE_FLAGS "-Wall")
 set(STM32_FLAGS "-mfpu=fpv4-sp-d16 -mthumb -mthumb-interwork -mlittle-endian -mfloat-abi=soft -march=armv7-m")
